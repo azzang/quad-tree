@@ -11,6 +11,13 @@ Node.prototype.findChildToInsertInto = function(coordinates) {
   var childWidth = this.boundingBox.width / 2;
   var childHeight = this.boundingBox.height / 2;
 
+  var parentArea = this.boundingBox.width * this.boundingBox.height;
+  var childArea = childWidth * childHeight;
+
+  if (parentArea / childArea !== 4) {
+    return null; // we can't divide by 2 forever (we can't keep track of infinitesimally small boxes)
+  }
+
   var originX = this.boundingBox.origin.x;
   var originY = this.boundingBox.origin.y;
 

@@ -1,5 +1,5 @@
-var Node = require('./Node/Node');
-var Vector = require('./Node/Vector');
+var Node = require('./Helper Objects/Node');
+var Vector = require('./Helper Objects/Vector');
 
 function QuadTree() {
   this.root = new Node(0, 0, 100, 20);
@@ -8,7 +8,7 @@ function QuadTree() {
 QuadTree.prototype.searchAndInsert = function(node, coordinates) {
   if (node.coordinates === null) return node.coordinates = coordinates;
   var child = node.findChildToInsertInto(coordinates);
-  this.searchAndInsert(child, coordinates);
+  if (child) this.searchAndInsert(child, coordinates);
 };
 
 QuadTree.prototype.insert = function(x, y) {
