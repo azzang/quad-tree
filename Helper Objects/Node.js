@@ -14,42 +14,32 @@ Node.prototype.findChildToInsertInto = function(coordinates) {
   var parentArea = this.boundingBox.width * this.boundingBox.height;
   var childArea = childWidth * childHeight;
 
-  if (parentArea / childArea !== 4) {
-    return null; // we can't divide by 2 forever (we can't keep track of infinitesimally small boxes)
-  }
-
   var originX = this.boundingBox.origin.x;
   var originY = this.boundingBox.origin.y;
 
   var originXPlusOffset = originX + childWidth;
   var originYPlusOffset = originY + childHeight;
 
-  var childDirection;
+  var childDirection = '';
   var childOriginX;
   var childOriginY;
 
-  if (coordinates.x < originXPlusOffset) {
-    childOriginX = originX;
+  if (parentArea / childArea !== 4) return null; // can't divide by 2 forever (i.e. keep track of infinitesimally small boxes)
 
-    if (coordinates.y < originYPlusOffset) {
-      childDirection = 'southWest';
-      childOriginY = originY;
-    } else {
-      childDirection = 'northWest';
-      childOriginY = originYPlusOffset;
-    }
-
+  if (coordinates.y < originYPlusOffset) {
+    childDirection += 'south';
+    childOriginY = originY;
   } else {
+    childDirection += 'north';
+    childOriginY = originYPlusOffset;
+  }
+
+  if (coordinates.x < originXPlusOffset) {
+    childDirection += 'West';
+    childOriginX = originX;
+  } else {
+    childDirection += 'East';
     childOriginX = originXPlusOffset;
-
-    if (coordinates.y < originYPlusOffset) {
-      childDirection = 'southEast';
-      childOriginY = originY;
-    } else {
-      childDirection = 'northEast';
-      childOriginY = originYPlusOffset;
-    }
-
   }
 
   if (!this.children[childDirection]) {
